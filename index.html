@@ -1,0 +1,71 @@
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Trivia Game</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <!-- Bootstrap File -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
+  integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
+  <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+  <script src="https://code.jquery.com/jquery.js"></script>
+  </head>
+<body>
+    
+  <div class="container">
+  <div class="jumbotron">
+    <h1 class="text-center">
+      <strong>Triva Game!</strong>
+    </h1>
+    <hr>
+    <div id="Instuctions" class="text-left">
+      <h2>Answer the quesitons below!</h2>
+      <h2>You will have 30 seconds to answer</h2>
+      <h2>When you are done, you will see the results of your quiz</h2>
+      <h2>And you can play again if you like!</h2>
+      <h2>BEGIN!</h2>
+    </div>
+  </div>
+
+  <div class="container">
+    
+  </div>
+
+  <div class="row">
+    <div class="col-lg-6">
+      <div id="Trivia_Card" class="card">
+        <div>Time: <span id="timer"></span></div>
+        <div id="display"></div>
+        <h4 class="card-header">Is it,</h4>
+        <div class="card-body">
+          <div class="text-center">
+            <button class="btn btn-dark btn-lg normal-button" id="A">
+                <span id="A_text">A</span>
+            </button>
+            <button class="btn btn-dark btn-lg normal-button" id="B">
+                <span id="B_text">B</span>
+            </button>
+            <button class="btn btn-dark btn-lg normal-button" id="C">
+                <span id="C_text">C</span>
+            </button>
+            <button class="btn btn-dark btn-lg normal-button" id="D">
+                <span id="D_text">D</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+ </div>
+</div>
+<footer>
+  <div class="container" id="footer">
+    <div class="row">Copyright &copy; 2020 Zach Hassler</div>
+  </div>
+</footer>
+ <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+ <script src="assets/javascript/app.js"></script>
+</body>
+</html>
