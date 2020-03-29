@@ -39,6 +39,7 @@ function game(){
     C_text.innerHTML=questions[v].answers[2]
     D_text.innerHTML=questions[v].answers[3]
     onClick()
+    v++
         }
     function onClick(){
         $('.normal-button').on('click',function(){
@@ -55,7 +56,6 @@ function game(){
             console.log("wrong answer loses: "+ loss);
         }
    if (v < questions.length){
-    v++
     console.log("second check v on " + v);
    game()
    }
