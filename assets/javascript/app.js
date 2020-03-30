@@ -1,5 +1,4 @@
-let wins = document.getElementById("wins");
-let losses = document.getElementById("losses");
+//Starter values
 let display = document.getElementById("display");
 let A_button = document.getElementById("A")
 let B_button = document.getElementById("B")
@@ -9,6 +8,7 @@ let A_text = document.getElementById("A_text");
 let B_text = document.getElementById("B_text");
 let C_text = document.getElementById("C_text");
 let D_text = document.getElementById("D_text");
+//question object array
 var questions =[
     {ID:1,
     questionText:"What is the average weight of a Canvasback duck?",
@@ -31,13 +31,25 @@ var questions =[
     answers: ["Notorious B.I.G","P-Diddy","Marky Mark","Dr.Dre"],
     correct: "A"},
 ];
+//starter game values
 var win = 0
 var loss = 0
 var v = 0
-//console.log(questions[0].questionText)
+//outer function to be called once and at game repeats
+function rightAnswer(){
+    display.innerHTML = "You got it right!"
+    setTimeout(function(){
+        display.innerHTML = ""},3000);
+}
+function wrongAnswer(){
+    display.innerHTML = "Crud wrong answer!"
+    setTimeout(function(){
+        display.innerHTML = ""},3000);
+}
 function outerGame(){
     game()
 }
+// inner game
 function game(){
     console.log("v on " + v);
     console.log("wins on " + win)
@@ -48,8 +60,8 @@ function game(){
     B_text.innerHTML=questions[v].answers[1]
     C_text.innerHTML=questions[v].answers[2]
     D_text.innerHTML=questions[v].answers[3]
+    //on click is a seperate function to isolate its actions
     onClick();
-        }
     function onClick(){
         $('button').unbind().click(function(){
         var t = $(this).attr('id');
@@ -58,24 +70,44 @@ function game(){
         console.log(t + " button pushed")
         console.log("correct answer: "+ questions[v].correct)
         if(questions[v].correct === t){
-            display.innerHTML = "Woot! Right Answer!"
+            rightAnswer();
             win++
             console.log("right answer, wins: "+ win);
-        }
-        else{
-            display.innerHTML = "Crud wrong answer!"
+            }
+        else {
+            wrongAnswer();
             loss++
             console.log("wrong answer loses: "+ loss);
         }
+//checks if the game is finished, and sets up a reset if so.
    if ((v+1) >= questions.length){
-    display.innerHTML = "Thats the end of the game!" 
+    $('#display').text("Thats the end of the game!");
+    $('#display').append('<h2 id="wins"></h2>');
+    $('#display').append('<h2 id="losses"></h2>');
+    $('#wins').text("Questions correct: "+ win)
+    $('#losses').text("Questions incorrect: "+ loss)
+    $('#button_div').empty();
+    $('.card-header').empty();
+    $('#button_div').append('<button id="playAgain">Play Again?!</button>');
+    $('#playAgain').click(function(){
+        v = 0
+        win = 0
+        loss = 0
+        $('#button_div').empty();
+        $('#button_div').append('<button class="btn btn-dark btn-lg normal-button" id="A"><span id="A_text">A</span></button>');
+        $('#button_div').append('<button class="btn btn-dark btn-lg normal-button" id="B"><span id="B_text">B</span></button>');
+        $('#button_div').append('<button class="btn btn-dark btn-lg normal-button" id="C"><span id="C_text">C</span></button>');
+        $('#button_div').append('<button class="btn btn-dark btn-lg normal-button" id="D"><span id="D_text">D</span></button>');
+        outerGame();
+    });
    }
    else{
     console.log("second check v on " + v);
     v++
    game()
    }
-    });
+});
+};
 }
 console.log(questions.length);
 outerGame()
