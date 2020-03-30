@@ -37,15 +37,17 @@ var loss = 0
 var v = 0
 //outer function to be called once and at game repeats
 function rightAnswer(){
+    console.log("right answer runs")
     display.innerHTML = "You got it right!"
     setTimeout(function(){
-        display.innerHTML = ""},3000);
+        display.innerHTML = "Hi right answer"},3000);
 }
 function wrongAnswer(){
+    console.log("wrong answer runs")
     display.innerHTML = "Crud wrong answer!"
     setTimeout(function(){
-        display.innerHTML = ""},3000);
-}
+        display.innerHTML = "Hi wrong answer"},3000);
+    }
 function outerGame(){
     game()
 }
@@ -98,6 +100,7 @@ function game(){
         $('#button_div').append('<button class="btn btn-dark btn-lg normal-button" id="B"><span id="B_text">B</span></button>');
         $('#button_div').append('<button class="btn btn-dark btn-lg normal-button" id="C"><span id="C_text">C</span></button>');
         $('#button_div').append('<button class="btn btn-dark btn-lg normal-button" id="D"><span id="D_text">D</span></button>');
+        console.log($('#button_div'))
         outerGame();
     });
    }
@@ -111,3 +114,6 @@ function game(){
 }
 console.log(questions.length);
 outerGame()
+// create new func called setup.  include display and button set up .innerhtmls in it. call it in outergame to set up initial.  call it inside of right and wrong anser to reset game. call game() inside asnwers.  remove game() from finished game else.
+
+//You are close with your playagain click.  something is not quite working with the 
