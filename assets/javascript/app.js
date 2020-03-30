@@ -1,4 +1,4 @@
-let wins = document.getElementById("wins"); 
+let wins = document.getElementById("wins");
 let losses = document.getElementById("losses");
 let display = document.getElementById("display");
 let A_button = document.getElementById("A")
@@ -22,13 +22,23 @@ var questions =[
     questionText:"Why are you getting out of your seat?",
     answers: ["To get tea","TO JUMP AROUND!","Strech break","To get Red Bull"],
     correct: "B"},
+    {ID:4,
+    questionText:"What does the Fox say?",
+    answers: ["Moo","Meow","quack","TETETETTEETE!"],
+    correct: "D"},
+    {ID:5,
+    questionText:"Who is known to crush a lot?",
+    answers: ["Notorious B.I.G","P-Diddy","Marky Mark","Dr.Dre"],
+    correct: "A"},
 ];
 var win = 0
 var loss = 0
 var v = 0
 //console.log(questions[0].questionText)
+function outerGame(){
+    game()
+}
 function game(){
-    
     console.log("v on " + v);
     console.log("wins on " + win)
     console.log("losses on " + loss)
@@ -38,14 +48,16 @@ function game(){
     B_text.innerHTML=questions[v].answers[1]
     C_text.innerHTML=questions[v].answers[2]
     D_text.innerHTML=questions[v].answers[3]
-    onClick()
-    v++
+    onClick();
         }
     function onClick(){
-        $('.normal-button').on('click',function(){
+        $('button').unbind().click(function(){
         var t = $(this).attr('id');
+        console.log("value of t: "+ t)
+        console.log("value of v after click: "+ v)
         console.log(t + " button pushed")
-        if(questions[v].correct === $(this).attr('id')){
+        console.log("correct answer: "+ questions[v].correct)
+        if(questions[v].correct === t){
             display.innerHTML = "Woot! Right Answer!"
             win++
             console.log("right answer, wins: "+ win);
@@ -55,13 +67,15 @@ function game(){
             loss++
             console.log("wrong answer loses: "+ loss);
         }
-   if (v < questions.length){
-    console.log("second check v on " + v);
-   game()
+   if ((v+1) >= questions.length){
+    display.innerHTML = "Thats the end of the game!" 
    }
    else{
-    display.innerHTML = "Thats the end of the game!"
+    console.log("second check v on " + v);
+    v++
+   game()
    }
     });
 }
-game()
+console.log(questions.length);
+outerGame()
