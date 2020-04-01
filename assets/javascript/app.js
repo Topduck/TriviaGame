@@ -35,84 +35,128 @@ var questions =[
 var win = 0
 var loss = 0
 var v = 0
+var timeLeft = 30;
 //outer function to be called once and at game repeats
 function rightAnswer(){
     console.log("right answer runs")
     display.innerHTML = "You got it right!"
+    v++
     setTimeout(function(){
-        display.innerHTML = "Hi right answer"},3000);
+        if(v >= 5){
+            gameOver()
+        }
+        else{
+            setUp()
+            countDown()};},3000);
 }
 function wrongAnswer(){
     console.log("wrong answer runs")
     display.innerHTML = "Crud wrong answer!"
+    v++
     setTimeout(function(){
-        display.innerHTML = "Hi wrong answer"},3000);
-    }
-function outerGame(){
-    game()
+        if(v >= 5){
+            gameOver()
+        }
+        else{
+            setUp()
+            countDown()};},3000);
 }
-// inner game
-function game(){
+function outOftime(){
+    console.log("Out of time")
+    display.innerHTML = "You ran out of time!"
+    v++
+    loss++
+    setTimeout(function(){
+        if(v >= 5){
+            gameOver()
+        }
+        else{
+            setUp()
+            countDown()};},3000);
+        }
+function gameOver(){
+        $('#display').text("Thats the end of the game!");
+        $('#display').append('<h2 id="wins"></h2>');
+        $('#display').append('<h2 id="losses"></h2>');
+        $('#wins').text("Questions correct: "+ win)
+        $('#losses').text("Questions incorrect: "+ loss)
+        $('#button_div').empty();
+        $('.card-header').text('');
+        $('#button_div').append('<button id="playAgain">Play Again?!</button>');
+        $('#playAgain').click(function(){
+            $('#button_div').empty();
+            var buttonA = $('<button>').attr({'class':'btn btn-dark btn-lg normal-button', 'id':'A'})
+            var buttonB = $('<button>').attr({'class':'btn btn-dark btn-lg normal-button', 'id':'B'})
+            var buttonC = $('<button>').attr({'class':'btn btn-dark btn-lg normal-button', 'id':'C'})
+            var buttonD = $('<button>').attr({'class':'btn btn-dark btn-lg normal-button', 'id':'D'})
+            $('#button_div').append(buttonA,buttonB,buttonC,buttonD);
+            outerGame();
+        });
+        
+       game()
+       }
+function setUp(){
     console.log("v on " + v);
     console.log("wins on " + win)
     console.log("losses on " + loss)
     console.log(questions[v].questionText)
-    display.innerHTML = questions[v].questionText
-    A_text.innerHTML=questions[v].answers[0]
-    B_text.innerHTML=questions[v].answers[1]
-    C_text.innerHTML=questions[v].answers[2]
-    D_text.innerHTML=questions[v].answers[3]
-    //on click is a seperate function to isolate its actions
-    onClick();
-    function onClick(){
-        $('button').unbind().click(function(){
-        var t = $(this).attr('id');
-        console.log("value of t: "+ t)
-        console.log("value of v after click: "+ v)
-        console.log(t + " button pushed")
-        console.log("correct answer: "+ questions[v].correct)
-        if(questions[v].correct === t){
-            rightAnswer();
-            win++
-            console.log("right answer, wins: "+ win);
-            }
-        else {
-            wrongAnswer();
-            loss++
-            console.log("wrong answer loses: "+ loss);
+    display.innerHTML =questions[v].questionText
+    A.innerHTML=questions[v].answers[0]
+    B.innerHTML=questions[v].answers[1]
+    C.innerHTML=questions[v].answers[2]
+    D.innerHTML=questions[v].answers[3]
+
+}
+function countDown(){
+    timeLeft = 30;
+    //var timerDiv = document.getElementById('timer');
+    var timerID = setInterval(finalCountdown, 1000);
+    function finalCountdown(){
+        if (timeLeft == -1){
+            clearInterval(timerID);
+            outOftime()
         }
-//checks if the game is finished, and sets up a reset if so.
-   if ((v+1) >= questions.length){
-    $('#display').text("Thats the end of the game!");
-    $('#display').append('<h2 id="wins"></h2>');
-    $('#display').append('<h2 id="losses"></h2>');
-    $('#wins').text("Questions correct: "+ win)
-    $('#losses').text("Questions incorrect: "+ loss)
-    $('#button_div').empty();
-    $('.card-header').empty();
-    $('#button_div').append('<button id="playAgain">Play Again?!</button>');
-    $('#playAgain').click(function(){
-        v = 0
-        win = 0
-        loss = 0
-        $('#button_div').empty();
-        $('#button_div').append('<button class="btn btn-dark btn-lg normal-button" id="A"><span id="A_text">A</span></button>');
-        $('#button_div').append('<button class="btn btn-dark btn-lg normal-button" id="B"><span id="B_text">B</span></button>');
-        $('#button_div').append('<button class="btn btn-dark btn-lg normal-button" id="C"><span id="C_text">C</span></button>');
-        $('#button_div').append('<button class="btn btn-dark btn-lg normal-button" id="D"><span id="D_text">D</span></button>');
-        console.log($('#button_div'))
-        outerGame();
-    });
-   }
-   else{
-    console.log("second check v on " + v);
-    v++
-   game()
-   }
+        else{
+            document.getElementById('timer').innerHTML = "time: "+ timeLeft
+            timeLeft--;
+            
+        }
+    }
+};
+function outerGame(){
+    v = 0;
+    win = 0;
+    loss = 0;
+    timeLeft = 5;
+    setUp();
+    
+    game();
+}
+// inner game
+function game(){
+    countDown();
+    console.log("prebutton v value: "+v);
+    $('.normal-button').unbind().click(function(){
+    var t = $(this).attr('id');
+    console.log("value of t: "+ t)
+    console.log("value of v after click: "+ v)
+    if(questions[v].correct === t){
+        rightAnswer();
+        win++
+        clearInterval(timerID);
+        console.log("right answer, wins: "+ win);
+        }
+    else {
+        wrongAnswer();
+        loss++
+        clearInterval(timerID);
+        console.log("wrong answer loses: "+ loss);
+    }
+    //checks if the game is finished, and sets up a reset if so.
+   
 });
 };
-}
-console.log(questions.length);
+
 outerGame()
 // create new func called setup.  include display and button set up .innerhtmls in it. call it in outergame to set up initial.  call it inside of right and wrong anser to reset game. call game() inside asnwers.  remove game() from finished game else.
 
