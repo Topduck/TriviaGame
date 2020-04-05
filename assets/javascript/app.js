@@ -25,24 +25,25 @@ var questions =[
     correct: "B"},
     {ID:4,
     questionText:"What does the Fox say?",
-    answers: ["Moo","Meow","quack","TETETETTEETE!"],
+    answers: ["Moo","Meow","Quack","TETETETTEETE!"],
     correct: "D"},
     {ID:5,
-    questionText:"Who is known to crush a lot?",
-    answers: ["Notorious B.I.G","P-Diddy","Marky Mark","Dr.Dre"],
+    questionText:"Who is not a playa?",
+    answers: ["Notorious B.I.G.","P-Diddy","Marky Mark","Dr.Dre"],
     correct: "A"},
 ];
 //starter game values
 var win = 0
 var loss = 0
 var v = 0
-//outer function to be called once and at game repeats
+//Runs if the user picks the right answer.  pauses the game for 3 
+//seconds before advancing to the next question.
 function rightAnswer(){
     console.log("right answer runs")
     display.innerHTML = "You got it right!"
     v++
     setTimeout(function(){
-        if(v >= 5){
+        if(v >= questions.length){
             stop()
             gameOver()
         }
@@ -50,12 +51,14 @@ function rightAnswer(){
             setUp()
             countDown()};},3000);
 }
+//Runs if the user picks the wrong answer.  pauses the game for 3 
+//seconds before advancing to the next question.
 function wrongAnswer(){
     console.log("wrong answer runs")
     display.innerHTML = "Crud wrong answer!"
     v++
     setTimeout(function(){
-        if(v >= 5){
+        if(v >= questions.length){
             stop()
             gameOver()
         }
@@ -63,14 +66,15 @@ function wrongAnswer(){
             setUp()
             countDown()};},3000);
 }
+//outer function to be called once and at game repeats
 function outOftime(){
-    if (v < 5){
+    if (v < questions.length){
     console.log("Out of time")
     display.innerHTML = "You ran out of time!"
     v++
     loss++
     setTimeout(function(){
-        if(v >= 5){
+        if(v >= questions.length){
             stop()
             gameOver()
         }
@@ -79,6 +83,7 @@ function outOftime(){
             countDown()};},3000);
         }
     };
+    // Runs after the game is over, via if v = the number of questions
 function gameOver(){
     $('#timer').text("");
     $('#display').text("Thats the end of the game!");
@@ -89,6 +94,7 @@ function gameOver(){
     $('#button_div').empty();
     $('.card-header').text('');
     $('#button_div').append('<button id="playAgain">Play Again?!</button>');
+    //clicking this button will reset the html for the answer buttons
     $('#playAgain').click(function(){
         $('#button_div').empty();
         var buttonA = $('<button>').attr({'class':'btn btn-dark btn-lg normal-button', 'id':'A'})
@@ -100,6 +106,7 @@ function gameOver(){
         });
        game()
        }
+       //set up of each question, advancing the question and answers using v as a counter
 function setUp(){
     console.log("v on " + v);
     console.log("wins on " + win)
@@ -112,10 +119,10 @@ function setUp(){
     D.innerHTML=questions[v].answers[3]
 
 }
+//countdown is the question timer. if it reaches 0 the question will be wrong
 function countDown(){
-    if(v < 5){
-    timeLeft = 5;
-    //var timerDiv = document.getElementById('timer');
+    if(v < questions.length){
+    timeLeft = 10;
     intervalId = setInterval(finalCountdown, 1000);
     clockRunning = true;
     function finalCountdown(){
@@ -130,8 +137,8 @@ function countDown(){
     }
 }
 };
+// stops the countdown set interval
 function stop() {
-    // DONE: Use clearInterval to stop the count here and set the clock to not be running.
     clearInterval(intervalId);
     clockRunning = false;
   }
@@ -146,29 +153,29 @@ function outerGame(){
 }
 // inner game
 function game(){
+    //starts count down
     countDown();
     console.log("prebutton v value: "+v);
+    //listens for which answer is choosen
     $('.normal-button').unbind().click(function(){
     stop()
     var t = $(this).attr('id');
     console.log("value of t: "+ t)
     console.log("value of v after click: "+ v)
+    //if user clicks the right answer
     if(questions[v].correct === t){
         rightAnswer();
         win++
         console.log("right answer, wins: "+ win);
         }
+        // if wrong answer
     else {
         wrongAnswer();
         loss++
         console.log("wrong answer loses: "+ loss);
     }
-    //checks if the game is finished, and sets up a reset if so.
    
 });
 };
 
 outerGame()
-// create new func called setup.  include display and button set up .innerhtmls in it. call it in outergame to set up initial.  call it inside of right and wrong anser to reset game. call game() inside asnwers.  remove game() from finished game else.
-
-//You are close with your playagain click.  something is not quite working with the 
