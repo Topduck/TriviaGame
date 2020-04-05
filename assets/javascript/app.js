@@ -8,6 +8,7 @@ let A_text = document.getElementById("A_text");
 let B_text = document.getElementById("B_text");
 let C_text = document.getElementById("C_text");
 let D_text = document.getElementById("D_text");
+var intervalId;
 //question object array
 var questions =[
     {ID:1,
@@ -35,7 +36,6 @@ var questions =[
 var win = 0
 var loss = 0
 var v = 0
-var timeLeft = 30;
 //outer function to be called once and at game repeats
 function rightAnswer(){
     console.log("right answer runs")
@@ -43,6 +43,7 @@ function rightAnswer(){
     v++
     setTimeout(function(){
         if(v >= 5){
+            stop()
             gameOver()
         }
         else{
@@ -55,6 +56,7 @@ function wrongAnswer(){
     v++
     setTimeout(function(){
         if(v >= 5){
+            stop()
             gameOver()
         }
         else{
@@ -62,37 +64,40 @@ function wrongAnswer(){
             countDown()};},3000);
 }
 function outOftime(){
+    if (v < 5){
     console.log("Out of time")
     display.innerHTML = "You ran out of time!"
     v++
     loss++
     setTimeout(function(){
         if(v >= 5){
+            stop()
             gameOver()
         }
         else{
             setUp()
             countDown()};},3000);
         }
+    };
 function gameOver(){
-        $('#display').text("Thats the end of the game!");
-        $('#display').append('<h2 id="wins"></h2>');
-        $('#display').append('<h2 id="losses"></h2>');
-        $('#wins').text("Questions correct: "+ win)
-        $('#losses').text("Questions incorrect: "+ loss)
+    $('#timer').text("");
+    $('#display').text("Thats the end of the game!");
+    $('#display').append('<h2 id="wins"></h2>');
+    $('#display').append('<h2 id="losses"></h2>');
+    $('#wins').text("Questions correct: "+ win)
+    $('#losses').text("Questions incorrect: "+ loss)
+    $('#button_div').empty();
+    $('.card-header').text('');
+    $('#button_div').append('<button id="playAgain">Play Again?!</button>');
+    $('#playAgain').click(function(){
         $('#button_div').empty();
-        $('.card-header').text('');
-        $('#button_div').append('<button id="playAgain">Play Again?!</button>');
-        $('#playAgain').click(function(){
-            $('#button_div').empty();
-            var buttonA = $('<button>').attr({'class':'btn btn-dark btn-lg normal-button', 'id':'A'})
-            var buttonB = $('<button>').attr({'class':'btn btn-dark btn-lg normal-button', 'id':'B'})
-            var buttonC = $('<button>').attr({'class':'btn btn-dark btn-lg normal-button', 'id':'C'})
-            var buttonD = $('<button>').attr({'class':'btn btn-dark btn-lg normal-button', 'id':'D'})
-            $('#button_div').append(buttonA,buttonB,buttonC,buttonD);
-            outerGame();
+        var buttonA = $('<button>').attr({'class':'btn btn-dark btn-lg normal-button', 'id':'A'})
+        var buttonB = $('<button>').attr({'class':'btn btn-dark btn-lg normal-button', 'id':'B'})
+        var buttonC = $('<button>').attr({'class':'btn btn-dark btn-lg normal-button', 'id':'C'})
+        var buttonD = $('<button>').attr({'class':'btn btn-dark btn-lg normal-button', 'id':'D'})
+        $('#button_div').append(buttonA,buttonB,buttonC,buttonD);
+        outerGame();
         });
-        
        game()
        }
 function setUp(){
@@ -108,21 +113,28 @@ function setUp(){
 
 }
 function countDown(){
-    timeLeft = 30;
+    if(v < 5){
+    timeLeft = 5;
     //var timerDiv = document.getElementById('timer');
-    var timerID = setInterval(finalCountdown, 1000);
+    intervalId = setInterval(finalCountdown, 1000);
+    clockRunning = true;
     function finalCountdown(){
         if (timeLeft == -1){
-            clearInterval(timerID);
+            clearInterval(intervalId);
             outOftime()
         }
         else{
             document.getElementById('timer').innerHTML = "time: "+ timeLeft
             timeLeft--;
-            
         }
     }
+}
 };
+function stop() {
+    // DONE: Use clearInterval to stop the count here and set the clock to not be running.
+    clearInterval(intervalId);
+    clockRunning = false;
+  }
 function outerGame(){
     v = 0;
     win = 0;
@@ -137,19 +149,18 @@ function game(){
     countDown();
     console.log("prebutton v value: "+v);
     $('.normal-button').unbind().click(function(){
+    stop()
     var t = $(this).attr('id');
     console.log("value of t: "+ t)
     console.log("value of v after click: "+ v)
     if(questions[v].correct === t){
         rightAnswer();
         win++
-        clearInterval(timerID);
         console.log("right answer, wins: "+ win);
         }
     else {
         wrongAnswer();
         loss++
-        clearInterval(timerID);
         console.log("wrong answer loses: "+ loss);
     }
     //checks if the game is finished, and sets up a reset if so.
